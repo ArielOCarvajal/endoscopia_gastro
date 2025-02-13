@@ -283,7 +283,7 @@
   }
   
   .diagnosis {
-    border: 1px solid #dee2e6;
+    border: 1px solid #000408;
     padding: 1rem;
     border-radius: 4px;
   }
@@ -346,3 +346,100 @@
       opacity: 1;
     }
   }
+
+  /* Endoscopia alta */
+  /* Agregar a tu archivo CSS */
+.report-content {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.report-header .company-info h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.report-header .company-info p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.report-header .company-info h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.table.table-sm td {
+  padding: 0.5rem;
+  border-color: #dee2e6;
+}
+
+.section h4 {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+}
+
+.section p {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+.additional-info {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.diagnosis {
+  border: 1px solid #010508;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.signature-line {
+  width: 200px;
+  height: 1px;
+  background-color: #000;
+  margin: 1rem auto;
+}
+
+@media print {
+  .report-content {
+    padding: 0 !important;
+  }
+
+  .section h4 {
+    background-color: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .additional-info {
+    background-color: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Y en tu archivo de estilos (CSS), agrega o modifica: */
+.diagnosis-header {
+  color: #000 !important; /* Asegura que el texto sea negro */
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+@media print {
+  .diagnosis-header {
+    color: #000 !important;
+    background-color: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

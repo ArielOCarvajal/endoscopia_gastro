@@ -10,6 +10,13 @@ const MedicalReportForm = () => {
     obraSocial: "",
     obraSocialNumero: "",
     tipoEstudio: "baja", // Agregamos el nuevo campo con valor por defecto
+    // Campos para endoscopia alta
+    esofago:
+      "Sin lesiones mucosas. Calibre conservado. Cambio mucoso a 36 cm de ADS, impronta hiatal a 38 cm de ADS. Conformando hernia hiatal por deslizamiento de 2cm.",
+    estomago:
+      "Lago mucoso claro. Cardias complaciente.\nTecho, cuerpo y antro sin lesiones mucosas.\nPíloro céntrico y permeable.",
+    duodeno: "Bulbo y segunda porción sin lesiones mucosas.",
+
     estudio: "VIDEOCOLONOSCOPIA BAJO ANESTESIA",
     medicoSolicitante: "",
     motivo: "DOLOR ABDOMINAL EN ESTUDIO",
@@ -323,128 +330,174 @@ const MedicalReportForm = () => {
               onChange={handleInputChange}
             />
           </div>
+          {/* Después del campo de motivo y tipo de estudio */}
 
-          <div className="col-12">
-            <label className="form-label">Inspección Anal</label>
-            <textarea
-              className="form-control"
-              name="inspeccionAnal"
-              value={formData.inspeccionAnal}
-              onChange={handleInputChange}
-              rows="2"
-            />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">Esfínter</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.tactoRectal.esfinter}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  "tactoRectal",
-                  "esfinter",
-                  e.target.value
-                )
-              }
-            />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">Ampolla Rectal</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.tactoRectal.ampolla}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  "tactoRectal",
-                  "ampolla",
-                  e.target.value
-                )
-              }
-            />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">Dedo de Guante</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.tactoRectal.dedoGuante}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  "tactoRectal",
-                  "dedoGuante",
-                  e.target.value
-                )
-              }
-            />
-          </div>
-          <div className="col-12">
-            <label className="form-label">Videocolonoscopia</label>
-            <textarea
-              className="form-control"
-              name="videocolonoscopia"
-              value={formData.videocolonoscopia}
-              onChange={handleInputChange}
-              rows="3"
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Boston Total</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.escalaBoston.total}
-              onChange={(e) =>
-                handleNestedInputChange("escalaBoston", "total", e.target.value)
-              }
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Colon Derecho</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.escalaBoston.colonDerecho}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  "escalaBoston",
-                  "colonDerecho",
-                  e.target.value
-                )
-              }
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Colon Transverso</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.escalaBoston.colonTransverso}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  "escalaBoston",
-                  "colonTransverso",
-                  e.target.value
-                )
-              }
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label">Colon Izquierdo</label>
-            <input
-              type="text"
-              className="form-control"
-              value={formData.escalaBoston.colonIzquierdo}
-              onChange={(e) =>
-                handleNestedInputChange(
-                  "escalaBoston",
-                  "colonIzquierdo",
-                  e.target.value
-                )
-              }
-            />
-          </div>
+          {formData.tipoEstudio === "baja" ? (
+            // Campos para endoscopia baja
+            <>
+              <div className="col-12">
+                <label className="form-label">Inspección Anal</label>
+                <textarea
+                  className="form-control"
+                  name="inspeccionAnal"
+                  value={formData.inspeccionAnal}
+                  onChange={handleInputChange}
+                  rows="2"
+                />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label">Esfínter</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.tactoRectal.esfinter}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "tactoRectal",
+                      "esfinter",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label">Ampolla Rectal</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.tactoRectal.ampolla}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "tactoRectal",
+                      "ampolla",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label">Dedo de Guante</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.tactoRectal.dedoGuante}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "tactoRectal",
+                      "dedoGuante",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+              <div className="col-12">
+                <label className="form-label">Videocolonoscopia</label>
+                <textarea
+                  className="form-control"
+                  name="videocolonoscopia"
+                  value={formData.videocolonoscopia}
+                  onChange={handleInputChange}
+                  rows="3"
+                />
+              </div>
+              <div className="col-md-3">
+                <label className="form-label">Boston Total</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.escalaBoston.total}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "escalaBoston",
+                      "total",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+              <div className="col-md-3">
+                <label className="form-label">Colon Derecho</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.escalaBoston.colonDerecho}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "escalaBoston",
+                      "colonDerecho",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+              <div className="col-md-3">
+                <label className="form-label">Colon Transverso</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.escalaBoston.colonTransverso}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "escalaBoston",
+                      "colonTransverso",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+              <div className="col-md-3">
+                <label className="form-label">Colon Izquierdo</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.escalaBoston.colonIzquierdo}
+                  onChange={(e) =>
+                    handleNestedInputChange(
+                      "escalaBoston",
+                      "colonIzquierdo",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            </>
+          ) : (
+            // Campos para endoscopia alta
+            <>
+              <div className="col-12">
+                <label className="form-label">Esófago</label>
+                <textarea
+                  className="form-control"
+                  name="esofago"
+                  value={formData.esofago}
+                  onChange={handleInputChange}
+                  rows="3"
+                />
+              </div>
+
+              <div className="col-12">
+                <label className="form-label">Estómago</label>
+                <textarea
+                  className="form-control"
+                  name="estomago"
+                  value={formData.estomago}
+                  onChange={handleInputChange}
+                  rows="4"
+                />
+              </div>
+
+              <div className="col-12">
+                <label className="form-label">Duodeno</label>
+                <textarea
+                  className="form-control"
+                  name="duodeno"
+                  value={formData.duodeno}
+                  onChange={handleInputChange}
+                  rows="2"
+                />
+              </div>
+            </>
+          )}
           {/* Antes de la sección del anestesiólogo, agregar: */}
           <div className="col-md-3">
             <label className="form-label">Biopsias</label>
@@ -526,12 +579,13 @@ const MedicalReportForm = () => {
       </div>
 
       {/* Template para PDF */}
+      {/* Template para PDF */}
       <div id="report-template" className="d-none">
         <div className="report-content p-4 bg-white">
           <div className="report-header">
             <div className="d-flex align-items-center mb-2">
               <img
-                src="/Logo_HC.png"
+                src={logoBase64 || "/Logo_HC.png"}
                 alt="Hospital_Central"
                 className="logo"
                 style={{ maxWidth: "120px" }}
@@ -581,38 +635,61 @@ const MedicalReportForm = () => {
             <div className="report-body">
               <h4 className="text-uppercase">{formData.motivo}</h4>
 
-              <div className="section mb-3">
-                <h4 className="text-uppercase">INSPECCION ANAL:</h4>
-                <p>{formData.inspeccionAnal}</p>
-              </div>
+              {formData.tipoEstudio === "baja" ? (
+                // Template para endoscopia baja
+                <>
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">INSPECCION ANAL:</h4>
+                    <p>{formData.inspeccionAnal}</p>
+                  </div>
 
-              <div className="section mb-3">
-                <h4 className="text-uppercase">TACTO RECTAL:</h4>
-                <p>
-                  Esfínter {formData.tactoRectal.esfinter}. Ampolla rectal{" "}
-                  {formData.tactoRectal.ampolla}. Dedo de guante{" "}
-                  {formData.tactoRectal.dedoGuante}.
-                </p>
-              </div>
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">TACTO RECTAL:</h4>
+                    <p>
+                      Esfínter {formData.tactoRectal.esfinter}. Ampolla rectal{" "}
+                      {formData.tactoRectal.ampolla}. Dedo de guante{" "}
+                      {formData.tactoRectal.dedoGuante}.
+                    </p>
+                  </div>
 
-              <div className="section mb-3">
-                <h4 className="text-uppercase">Hallazgos endoscopicos:</h4>
-                <p>{formData.videocolonoscopia}</p>
-              </div>
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">HALLAZGOS ENDOSCOPICOS:</h4>
+                    <p>{formData.videocolonoscopia}</p>
+                  </div>
 
-              <div className="section mb-3">
-                <h4 className="text-uppercase">
-                  ESCALA DE PREPARACION DE BOSTON (LIMPIEZA DE COLON):
-                </h4>
-                <p>
-                  &lt; 5 no satisfactoria. = o &gt; 5 satisfactoria.
-                  <br />
-                  Total: {formData.escalaBoston.total}/9 (C.D:{" "}
-                  {formData.escalaBoston.colonDerecho} C.T:{" "}
-                  {formData.escalaBoston.colonTransverso} C.I:{" "}
-                  {formData.escalaBoston.colonIzquierdo})
-                </p>
-              </div>
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">
+                      ESCALA DE PREPARACION DE BOSTON (LIMPIEZA DE COLON):
+                    </h4>
+                    <p>
+                      &lt; 5 no satisfactoria. = o &gt; 5 satisfactoria.
+                      <br />
+                      Total: {formData.escalaBoston.total}/9 (C.D:{" "}
+                      {formData.escalaBoston.colonDerecho} C.T:{" "}
+                      {formData.escalaBoston.colonTransverso} C.I:{" "}
+                      {formData.escalaBoston.colonIzquierdo})
+                    </p>
+                  </div>
+                </>
+              ) : (
+                // Template para endoscopia alta
+                <>
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">ESÓFAGO:</h4>
+                    <p>{formData.esofago}</p>
+                  </div>
+
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">ESTÓMAGO:</h4>
+                    <p>{formData.estomago}</p>
+                  </div>
+
+                  <div className="section mb-3">
+                    <h4 className="text-uppercase">DUODENO:</h4>
+                    <p>{formData.duodeno}</p>
+                  </div>
+                </>
+              )}
 
               <div className="additional-info mb-4">
                 <p className="mb-1">Biopsias: {formData.biopsias}</p>
@@ -621,7 +698,9 @@ const MedicalReportForm = () => {
               </div>
 
               <div className="diagnosis mb-4">
-                <h4 className="text-uppercase mb-3">IMPRESIÓN DIAGNÓSTICA</h4>
+                <h4 className="text-uppercase mb-3 diagnosis-header">
+                  IMPRESIÓN DIAGNÓSTICA
+                </h4>
                 <p className="mb-0">{formData.diagnostico}</p>
               </div>
 
