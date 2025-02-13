@@ -1,4 +1,3 @@
-// src/components/MedicalReportForm.jsx
 import React, { useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
 
@@ -10,6 +9,7 @@ const MedicalReportForm = () => {
     edad: "",
     obraSocial: "",
     obraSocialNumero: "",
+    tipoEstudio: "baja", // Agregamos el nuevo campo con valor por defecto
     estudio: "VIDEOCOLONOSCOPIA BAJO ANESTESIA",
     medicoSolicitante: "",
     motivo: "DOLOR ABDOMINAL EN ESTUDIO",
@@ -70,6 +70,21 @@ const MedicalReportForm = () => {
 
     loadLogo();
   }, []);
+
+  // Modificar el useEffect para actualizar el campo estudio según el tipo
+  useEffect(() => {
+    if (formData.tipoEstudio === "alta") {
+      setFormData((prev) => ({
+        ...prev,
+        estudio: "VIDEOENDOSCOPIA DIGESTIVA ALTA BAJO ANESTESIA",
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        estudio: "VIDEOCOLONOSCOPIA BAJO ANESTESIA",
+      }));
+    }
+  }, [formData.tipoEstudio]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -155,7 +170,7 @@ const MedicalReportForm = () => {
               src="/Logo_HC.png"
               alt="Hospital_Central"
               className="logo me-4"
-              style={{ maxWidth: "120px" }}
+              style={{ maxWidth: "100px" }}
             />
             <div>
               <h3 className="mb-2">{formData.paciente}</h3>
@@ -233,6 +248,28 @@ const MedicalReportForm = () => {
               onChange={handleInputChange}
             />
           </div>
+          {/* Número de Obra Social */}
+          <div className="col-md-4">
+            <label className="form-label">Número de Obra Social</label>
+            <input
+              type="text"
+              className="form-control"
+              name="obraSocialNumero"
+              value={formData.obraSocialNumero}
+              onChange={handleInputChange}
+            />
+          </div>
+          {/* Médico Solicitante */}
+          <div className="col-md-6">
+            <label className="form-label">Médico Solicitante</label>
+            <input
+              type="text"
+              className="form-control"
+              name="medicoSolicitante"
+              value={formData.medicoSolicitante}
+              onChange={handleInputChange}
+            />
+          </div>
 
           <div className="col-12">
             <label className="form-label">Motivo</label>
@@ -241,6 +278,48 @@ const MedicalReportForm = () => {
               className="form-control"
               name="motivo"
               value={formData.motivo}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="col-12 mb-3">
+            <label className="form-label d-block">Tipo de Estudio</label>
+            <div className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="tipoEstudio"
+                id="endoscopiaAlta"
+                value="alta"
+                checked={formData.tipoEstudio === "alta"}
+                onChange={handleInputChange}
+              />
+              <label className="form-check-label" htmlFor="endoscopiaAlta">
+                Endoscopia alta
+              </label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="tipoEstudio"
+                id="endoscopiaBaja"
+                value="baja"
+                checked={formData.tipoEstudio === "baja"}
+                onChange={handleInputChange}
+              />
+              <label className="form-check-label" htmlFor="endoscopiaBaja">
+                Endoscopia baja
+              </label>
+            </div>
+          </div>
+          {/* Estudio */}
+          <div className="col-md-8">
+            <label className="form-label">Estudio</label>
+            <input
+              type="text"
+              className="form-control"
+              name="estudio"
+              value={formData.estudio}
               onChange={handleInputChange}
             />
           </div>
@@ -255,7 +334,6 @@ const MedicalReportForm = () => {
               rows="2"
             />
           </div>
-
           <div className="col-md-4">
             <label className="form-label">Esfínter</label>
             <input
@@ -301,7 +379,6 @@ const MedicalReportForm = () => {
               }
             />
           </div>
-
           <div className="col-12">
             <label className="form-label">Videocolonoscopia</label>
             <textarea
@@ -312,7 +389,6 @@ const MedicalReportForm = () => {
               rows="3"
             />
           </div>
-
           <div className="col-md-3">
             <label className="form-label">Boston Total</label>
             <input
@@ -369,7 +445,31 @@ const MedicalReportForm = () => {
               }
             />
           </div>
-
+          {/* Antes de la sección del anestesiólogo, agregar: */}
+          <div className="col-md-3">
+            <label className="form-label">Biopsias</label>
+            <select
+              className="form-select"
+              name="biopsias"
+              value={formData.biopsias}
+              onChange={handleInputChange}
+            >
+              <option value="NO">NO</option>
+              <option value="SI">SI</option>
+            </select>
+          </div>
+          <div className="col-md-3">
+            <label className="form-label">Anestesia</label>
+            <select
+              className="form-select"
+              name="anestesia"
+              value={formData.anestesia}
+              onChange={handleInputChange}
+            >
+              <option value="SI">SI</option>
+              <option value="NO">NO</option>
+            </select>
+          </div>
           <div className="col-md-6">
             <label className="form-label">Anestesiólogo</label>
             <input
@@ -380,7 +480,6 @@ const MedicalReportForm = () => {
               onChange={handleInputChange}
             />
           </div>
-
           <div className="col-md-6">
             <label className="form-label">Médico</label>
             <input
@@ -403,7 +502,17 @@ const MedicalReportForm = () => {
               }
             />
           </div>
-
+          <div className="col-12">
+            <label className="form-label">Diagnóstico</label>
+            <textarea
+              className="form-control"
+              name="diagnostico"
+              value={formData.diagnostico}
+              onChange={handleInputChange}
+              rows="3"
+              placeholder="Ingrese el diagnóstico"
+            />
+          </div>
           <div className="col-12 mt-4 text-center">
             <button
               type="button"
@@ -420,17 +529,17 @@ const MedicalReportForm = () => {
       <div id="report-template" className="d-none">
         <div className="report-content p-4 bg-white">
           <div className="report-header">
-            <div className="d-flex align-items-center mb-4">
+            <div className="d-flex align-items-center mb-2">
               <img
                 src="/Logo_HC.png"
                 alt="Hospital_Central"
                 className="logo"
-                style={{ maxWidth: "150px" }}
+                style={{ maxWidth: "120px" }}
               />
               <div className="company-info ms-3">
-                <p className="mb-0">HOSPITAL CENTRAL</p>
+                <h2 className="mb-0">HOSPITAL CENTRAL</h2>
                 <p className="mb-0">L. N. Alem & Salta, Ciudad Mendoza</p>
-                <p className="mb-0">Servicio de Gastroenterologia</p>
+                <h3 className="mb-0 fw-bold">Servicio de Gastroenterologia</h3>
               </div>
             </div>
 
@@ -459,12 +568,12 @@ const MedicalReportForm = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="fw-bold">Estudio:</td>
-                  <td>{formData.estudio}</td>
-                </tr>
-                <tr>
                   <td className="fw-bold">Médico solicitante:</td>
                   <td>{formData.medicoSolicitante}</td>
+                </tr>
+                <tr>
+                  <td className="fw-bold">Estudio:</td>
+                  <td>{formData.estudio}</td>
                 </tr>
               </tbody>
             </table>
@@ -487,9 +596,7 @@ const MedicalReportForm = () => {
               </div>
 
               <div className="section mb-3">
-                <h4 className="text-uppercase">
-                  VIDEOCOLONOSCOPIA BAJO ANESTESIA:
-                </h4>
+                <h4 className="text-uppercase">Hallazgos endoscopicos:</h4>
                 <p>{formData.videocolonoscopia}</p>
               </div>
 
