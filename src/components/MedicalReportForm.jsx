@@ -6,13 +6,59 @@ const MEDICOS = [
   {
     nombre: "Campoy, Daniel",
     matricula: "5248",
-    rubrica: `${import.meta.env.BASE_URL}images/rubricas/campoy.png`,
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Campoy.png`,
+  },
+  {
+    nombre: "Richardi, Ana",
+    matricula: "11110",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Richardi.png`,
+  },
+  {
+    nombre: "Suárez, Andrea",
+    matricula: "8588",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Suarez.png`,
+  },
+  {
+    nombre: "La Salvia, Daniela",
+    matricula: "10439",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Lasalvia.png`,
+  },
+  {
+    nombre: "Martínez, Francisco",
+    matricula: "12214",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Martinez.png`,
+  },
+  {
+    nombre: "Cabrera, Marisol",
+    matricula: "10778",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Cabrera.png`,
+  },
+  {
+    nombre: "Casbarien, Octavio",
+    matricula: "13496",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Casbarien.png`,
+  },
+  {
+    nombre: "Daffra, Pamela",
+    matricula: "9834",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Daffra.png`,
+  },
+  {
+    nombre: "Alcaraz, Patricia",
+    matricula: "10097",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Alcaraz.png`,
+  },
+  {
+    nombre: "Velazco, Gonzalo",
+    matricula: "13524",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Velazco.png`,
   },
   {
     nombre: "Carvajal, Ariel",
     matricula: "10934",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
   },
+
   // Puedes agregar más médicos aquí
 ];
 
@@ -33,7 +79,7 @@ const MedicalReportForm = () => {
     duodeno: "Bulbo y segunda porción sin lesiones mucosas.",
 
     estudio: "VIDEOCOLONOSCOPIA",
-    medicoSolicitante: "",
+    // medicoSolicitante: "",
     motivo: "",
     inspeccionAnal: "Sin lesiones.",
     tactoRectal: {
@@ -443,7 +489,7 @@ const MedicalReportForm = () => {
               onChange={handleInputChange}
             />
           </div>
-          {/* Médico Solicitante */}
+          {/* Médico Solicitante
           <div className="col-md-6">
             <label className="form-label">Médico Solicitante</label>
             <input
@@ -453,7 +499,7 @@ const MedicalReportForm = () => {
               value={formData.medicoSolicitante}
               onChange={handleInputChange}
             />
-          </div>
+          </div> */}
 
           <div className="col-12">
             <label className="form-label">Motivo</label>
@@ -849,10 +895,10 @@ const MedicalReportForm = () => {
                     {formData.obraSocial} - UNICO - {formData.documento}/00
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td className="fw-bold">Médico solicitante:</td>
                   <td>{formData.medicoSolicitante}</td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td className="fw-bold">Estudio:</td>
                   <td>{formData.estudio}</td>
