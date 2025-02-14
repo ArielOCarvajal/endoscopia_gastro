@@ -5,17 +5,12 @@ import html2pdf from "html2pdf.js";
 const MEDICOS = [
   {
     nombre: "Campoy, Daniel",
-    matricula: "5249",
+    matricula: "5248",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/campoy.png`,
   },
   {
-    nombre: "La Salvia, Daniela",
-    matricula: "10439",
-    rubrica: `${import.meta.env.BASE_URL}images/rubricas/lasalvia.png`,
-  },
-  {
     nombre: "Carvajal, Ariel",
-    matricula: "10933",
+    matricula: "10934",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
   },
   // Puedes agregar más médicos aquí
