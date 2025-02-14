@@ -443,3 +443,94 @@
     print-color-adjust: exact;
   }
 }
+
+/* Agregar a tu archivo CSS para medico y */
+.form-select {
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+/* Estilo par ala firma */
+/* Agregar a tu archivo CSS */
+.signature {
+  padding: 20px;
+  text-align: center;
+}
+
+.signature img {
+  display: block;
+  margin: 0 auto;
+  max-width: 200px;
+  height: auto;
+}
+
+.signature-line {
+  width: 200px;
+  height: 1px;
+  background-color: #000;
+  margin: 10px auto;
+}
+
+@media print {
+  .signature img {
+    max-width: 150px;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+/* Estilo imagenes */
+/* Agregar a tu archivo CSS */
+.image-upload-container {
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.image-upload-container:hover {
+  background-color: #e9ecef;
+}
+
+.image-upload-container img {
+  max-height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.images-section img {
+  border: 1px solid #dee2e6;
+  padding: 4px;
+  background: white;
+}
+
+@media print {
+  .images-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .images-section img {
+    max-height: 150px;
+    width: auto;
+    margin: 0 auto;
+  }
+}

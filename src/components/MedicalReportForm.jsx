@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
 
+// Agregar esta constante al inicio del archivo, después de las importaciones
+const MEDICOS = [
+  {
+    nombre: "Campoy, Daniel",
+    matricula: "5249",
+    rubrica: "/rubricas/campoy.png",
+  },
+  {
+    nombre: "La Salvia, Daniela",
+    matricula: "10439",
+    rubrica: "/rubricas/lasalvia.png",
+  },
+  {
+    nombre: "Carvajal, Ariel",
+    matricula: "10933",
+    rubrica: "/rubricas/carvajal.png",
+  },
+  // Puedes agregar más médicos aquí
+];
+
 const MedicalReportForm = () => {
   const initialState = {
     fecha: new Date().toISOString().split("T")[0],
@@ -9,7 +29,7 @@ const MedicalReportForm = () => {
     edad: "",
     obraSocial: "",
     obraSocialNumero: "",
-    tipoEstudio: "baja", // Agregamos el nuevo campo con valor por defecto
+    tipoEstudio: "alta", // Agregamos el nuevo campo con valor por defecto
     // Campos para endoscopia alta
     esofago:
       "Sin lesiones mucosas. Calibre conservado. Cambio mucoso a 36 cm de ADS, impronta hiatal a 38 cm de ADS. Conformando hernia hiatal por deslizamiento de 2cm.",
@@ -17,16 +37,17 @@ const MedicalReportForm = () => {
       "Lago mucoso claro. Cardias complaciente.\nTecho, cuerpo y antro sin lesiones mucosas.\nPíloro céntrico y permeable.",
     duodeno: "Bulbo y segunda porción sin lesiones mucosas.",
 
-    estudio: "VIDEOCOLONOSCOPIA BAJO ANESTESIA",
+    estudio: "VIDEOCOLONOSCOPIA",
     medicoSolicitante: "",
-    motivo: "DOLOR ABDOMINAL EN ESTUDIO",
+    motivo: "",
     inspeccionAnal: "Sin lesiones.",
     tactoRectal: {
-      esfinter: "",
-      ampolla: "",
-      dedoGuante: "",
+      esfinter: "normotónico, paredes lisas",
+      ampolla: "vacía",
+      dedoGuante: "dedo de guante limpio",
     },
-    videocolonoscopia: "",
+    videocolonoscopia:
+      "Se avanza hasta ciego, reconociendo estructuras, con intubación cecal. En todo el trayecto recorrido no se visualizan lesiones sobreelevadas ni estenosantes de la luz. Patrón mucoso y vascular conservado.",
     escalaBoston: {
       total: "",
       colonDerecho: "",
@@ -34,24 +55,41 @@ const MedicalReportForm = () => {
       colonIzquierdo: "",
     },
     biopsias: "NO",
-    anestesia: "SI",
+    anestesia: "NO",
     anestesiologo: "",
-    diagnostico: "ESTUDIO A CIEGO SIN LESIONES MUCOSAS",
+    diagnostico: "",
     medico: {
       nombre: "",
       matricula: "",
     },
+    imagenes: [null, null, null, null, null, null], // Array con 6 posiciones inicializadas como null
   };
 
   const [formData, setFormData] = useState(initialState);
   const [showResetButton, setShowResetButton] = useState(false);
   const [showHeader, setShowHeader] = useState(false);
   const [logoBase64, setLogoBase64] = useState("");
+  // Agregar estado para las imágenes en base64
+  const [imagenesBase64, setImagenesBase64] = useState(Array(6).fill(null));
 
+  // En el useEffect inicial, carga las imágenes guardadas
   useEffect(() => {
     const savedData = localStorage.getItem("medicalReportForm");
     if (savedData) {
-      setFormData(JSON.parse(savedData));
+      const parsedData = JSON.parse(savedData);
+      setFormData(parsedData);
+      if (parsedData.imagenes) {
+        setImagenesBase64(parsedData.imagenes);
+      }
+      // Cargar la rúbrica si hay un médico seleccionado
+      if (parsedData.medico && parsedData.medico.nombre) {
+        const medicoSeleccionado = MEDICOS.find(
+          (medico) => medico.nombre === parsedData.medico.nombre
+        );
+        if (medicoSeleccionado) {
+          cargarRubrica(medicoSeleccionado.rubrica);
+        }
+      }
       setShowResetButton(true);
       setShowHeader(true);
     }
@@ -83,12 +121,12 @@ const MedicalReportForm = () => {
     if (formData.tipoEstudio === "alta") {
       setFormData((prev) => ({
         ...prev,
-        estudio: "VIDEOENDOSCOPIA DIGESTIVA ALTA BAJO ANESTESIA",
+        estudio: "VIDEOENDOSCOPIA DIGESTIVA ALTA",
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        estudio: "VIDEOCOLONOSCOPIA BAJO ANESTESIA",
+        estudio: "VIDEOCOLONOSCOPIA",
       }));
     }
   }, [formData.tipoEstudio]);
@@ -100,12 +138,123 @@ const MedicalReportForm = () => {
         ...prev,
         [name]: value,
       };
+
+      // Limpiar anestesiólogo si anestesia es NO
+      if (name === "anestesia" && value === "NO") {
+        newData.anestesiologo = "";
+      }
+      localStorage.setItem("medicalReportForm", JSON.stringify(newData));
+      return newData;
+    });
+  };
+
+  // Agregar esta función de utilidad
+  const cargarRubrica = async (rubricaPath) => {
+    try {
+      const response = await fetch(rubricaPath);
+      const blob = await response.blob();
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setRubricaBase64(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error("Error cargando la rúbrica:", error);
+    }
+  };
+  // Para la selección del médico
+  // Agregar este estado junto a los otros estados del componente
+  const [rubricaBase64, setRubricaBase64] = useState("");
+
+  // Modificar handleMedicoChange para usar la nueva función
+  const handleMedicoChange = async (e) => {
+    const medicoSeleccionado = MEDICOS.find(
+      (medico) => medico.nombre === e.target.value
+    );
+    if (medicoSeleccionado) {
+      cargarRubrica(medicoSeleccionado.rubrica);
+      setFormData((prev) => {
+        const newData = {
+          ...prev,
+          medico: {
+            nombre: medicoSeleccionado.nombre,
+            matricula: medicoSeleccionado.matricula,
+            rubrica: medicoSeleccionado.rubrica,
+          },
+        };
+        localStorage.setItem("medicalReportForm", JSON.stringify(newData));
+        return newData;
+      });
+    }
+  };
+
+  // Función para manejar la carga de imágenes
+  const handleImageUpload = (e, index) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagenesBase64((prev) => {
+          const newImages = [...prev];
+          newImages[index] = reader.result;
+          return newImages;
+        });
+
+        // Guardar en el estado del formulario
+        setFormData((prev) => {
+          const newImagenes = [...(prev.imagenes || Array(6).fill(null))]; // Aseguramos que existe el array
+          newImagenes[index] = reader.result;
+          return {
+            ...prev,
+            imagenes: newImagenes,
+          };
+        });
+
+        // Actualizar localStorage
+        const updatedFormData = {
+          ...formData,
+          imagenes: formData.imagenes.map((img, i) =>
+            i === index ? reader.result : img
+          ),
+        };
+        localStorage.setItem(
+          "medicalReportForm",
+          JSON.stringify(updatedFormData)
+        );
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Función para eliminar una imagen
+  const handleRemoveImage = (index) => {
+    setImagenesBase64((prev) => {
+      const newImages = [...prev];
+      newImages[index] = null;
+      return newImages;
+    });
+
+    setFormData((prev) => {
+      const newImagenes = [...prev.imagenes];
+      newImagenes[index] = null;
+      const newData = {
+        ...prev,
+        imagenes: newImagenes,
+      };
       localStorage.setItem("medicalReportForm", JSON.stringify(newData));
       return newData;
     });
   };
 
   const handleNestedInputChange = (category, field, value) => {
+    // Si el campo es parte de la escala Boston, asegurar que sea numérico y entre 0-3
+    if (category === "escalaBoston" && field !== "total") {
+      // Validar que el valor sea un número entre 0 y 3
+      const numValue = parseInt(value);
+      if (isNaN(numValue) || numValue < 0 || numValue > 3) {
+        return; // No permitir valores inválidos
+      }
+    }
     setFormData((prev) => {
       const newData = {
         ...prev,
@@ -114,15 +263,44 @@ const MedicalReportForm = () => {
           [field]: value,
         },
       };
+      // Si el cambio es en algún campo de la escala Boston, calcular el total
+      if (category === "escalaBoston" && field !== "total") {
+        // Obtener los valores actualizados
+        const values = {
+          colonDerecho:
+            field === "colonDerecho"
+              ? parseInt(value)
+              : parseInt(prev.escalaBoston.colonDerecho) || 0,
+          colonTransverso:
+            field === "colonTransverso"
+              ? parseInt(value)
+              : parseInt(prev.escalaBoston.colonTransverso) || 0,
+          colonIzquierdo:
+            field === "colonIzquierdo"
+              ? parseInt(value)
+              : parseInt(prev.escalaBoston.colonIzquierdo) || 0,
+        };
+
+        // Calcular el total
+        const total =
+          values.colonDerecho + values.colonTransverso + values.colonIzquierdo;
+
+        // Actualizar el total en el estado
+        newData.escalaBoston.total = total.toString();
+      }
       localStorage.setItem("medicalReportForm", JSON.stringify(newData));
       return newData;
     });
   };
 
   const generatePDF = async () => {
-    if (!formData.paciente || !formData.documento) {
+    if (
+      !formData.paciente ||
+      !formData.documento ||
+      !formData.medico.matricula
+    ) {
       alert(
-        "Por favor complete al menos el nombre del paciente y el documento"
+        "Por favor complete al menos el nombre del paciente documento y médico interviniente"
       );
       return;
     }
@@ -163,6 +341,8 @@ const MedicalReportForm = () => {
 
   const resetForm = () => {
     setFormData(initialState);
+    setRubricaBase64(""); // Limpiar la rúbrica
+    setImagenesBase64(Array(6).fill(null)); // Limpiar las imágenes
     localStorage.removeItem("medicalReportForm");
     setShowResetButton(false);
     setShowHeader(false);
@@ -401,24 +581,11 @@ const MedicalReportForm = () => {
                 />
               </div>
               <div className="col-md-3">
-                <label className="form-label">Boston Total</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={formData.escalaBoston.total}
-                  onChange={(e) =>
-                    handleNestedInputChange(
-                      "escalaBoston",
-                      "total",
-                      e.target.value
-                    )
-                  }
-                />
-              </div>
-              <div className="col-md-3">
                 <label className="form-label">Colon Derecho</label>
                 <input
-                  type="text"
+                  type="number"
+                  min="0"
+                  max="3"
                   className="form-control"
                   value={formData.escalaBoston.colonDerecho}
                   onChange={(e) =>
@@ -433,7 +600,9 @@ const MedicalReportForm = () => {
               <div className="col-md-3">
                 <label className="form-label">Colon Transverso</label>
                 <input
-                  type="text"
+                  type="number"
+                  min="0"
+                  max="3"
                   className="form-control"
                   value={formData.escalaBoston.colonTransverso}
                   onChange={(e) =>
@@ -448,7 +617,9 @@ const MedicalReportForm = () => {
               <div className="col-md-3">
                 <label className="form-label">Colon Izquierdo</label>
                 <input
-                  type="text"
+                  type="number"
+                  min="0"
+                  max="3"
                   className="form-control"
                   value={formData.escalaBoston.colonIzquierdo}
                   onChange={(e) =>
@@ -458,6 +629,16 @@ const MedicalReportForm = () => {
                       e.target.value
                     )
                   }
+                />
+              </div>
+              <div className="col-md-3">
+                <label className="form-label">Boston Total</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={formData.escalaBoston.total}
+                  readOnly
+                  disabled
                 />
               </div>
             </>
@@ -519,30 +700,37 @@ const MedicalReportForm = () => {
               value={formData.anestesia}
               onChange={handleInputChange}
             >
-              <option value="SI">SI</option>
               <option value="NO">NO</option>
+              <option value="SI">SI</option>
             </select>
           </div>
+          {formData.anestesia === "SI" && (
+            <div className="col-md-6">
+              <label className="form-label">Anestesiólogo</label>
+              <input
+                type="text"
+                className="form-control"
+                name="anestesiologo"
+                value={formData.anestesiologo}
+                onChange={handleInputChange}
+              />
+            </div>
+          )}
+          {/* Reemplazar los campos de médico y matrícula por: */}
           <div className="col-md-6">
-            <label className="form-label">Anestesiólogo</label>
-            <input
-              type="text"
-              className="form-control"
-              name="anestesiologo"
-              value={formData.anestesiologo}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Médico</label>
-            <input
-              type="text"
-              className="form-control"
+            <label className="form-label">Médico interviniente</label>
+            <select
+              className="form-select"
               value={formData.medico.nombre}
-              onChange={(e) =>
-                handleNestedInputChange("medico", "nombre", e.target.value)
-              }
-            />
+              onChange={handleMedicoChange}
+            >
+              <option value="">Seleccione un médico</option>
+              {MEDICOS.map((medico) => (
+                <option key={medico.matricula} value={medico.nombre}>
+                  {medico.nombre}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="col-md-6">
             <label className="form-label">Matrícula</label>
@@ -550,9 +738,8 @@ const MedicalReportForm = () => {
               type="text"
               className="form-control"
               value={formData.medico.matricula}
-              onChange={(e) =>
-                handleNestedInputChange("medico", "matricula", e.target.value)
-              }
+              readOnly
+              disabled
             />
           </div>
           <div className="col-12">
@@ -565,6 +752,48 @@ const MedicalReportForm = () => {
               rows="3"
               placeholder="Ingrese el diagnóstico"
             />
+          </div>
+          {/* Agregar antes del botón de generar PDF */}
+          <div className="col-12 mt-4">
+            <h4 className="mb-3">Imágenes del estudio</h4>
+            <div className="row g-3">
+              {Array(6)
+                .fill(null)
+                .map((_, index) => (
+                  <div key={index} className="col-md-4">
+                    <div className="image-upload-container border rounded p-2">
+                      {imagenesBase64[index] ? (
+                        <div className="position-relative">
+                          <img
+                            src={imagenesBase64[index]}
+                            alt={`Imagen ${index + 1}`}
+                            className="img-fluid mb-2"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                            onClick={() => handleRemoveImage(index)}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <label className="btn btn-outline-primary mb-0">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="d-none"
+                              onChange={(e) => handleImageUpload(e, index)}
+                            />
+                            Imagen {index + 1}
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
           <div className="col-12 mt-4 text-center">
             <button
@@ -692,9 +921,18 @@ const MedicalReportForm = () => {
               )}
 
               <div className="additional-info mb-4">
-                <p className="mb-1">Biopsias: {formData.biopsias}</p>
+                <p className="mb-1">
+                  Biopsias:{" "}
+                  {formData.biopsias === "SI"
+                    ? "Retirar informe de biopsias en anatomía patológica (subsuelo, ala este del hospital) en 45 días"
+                    : formData.biopsias}
+                </p>
                 <p className="mb-1">Anestesia: {formData.anestesia}</p>
-                <p className="mb-0">Anestesiólogo: {formData.anestesiologo}</p>
+                {formData.anestesia === "SI" && (
+                  <p className="mb-0">
+                    Anestesiólogo: {formData.anestesiologo}
+                  </p>
+                )}
               </div>
 
               <div className="diagnosis mb-4">
@@ -705,10 +943,47 @@ const MedicalReportForm = () => {
               </div>
 
               <div className="signature mt-5 text-center">
+                {rubricaBase64 && (
+                  <img
+                    src={rubricaBase64}
+                    alt="Firma médico"
+                    style={{
+                      maxWidth: "200px",
+                      height: "auto",
+                      marginBottom: "10px",
+                    }}
+                  />
+                )}
                 <div className="signature-line"></div>
                 <p className="mb-0">{formData.medico.nombre}</p>
                 <p>Mat. {formData.medico.matricula}</p>
               </div>
+              {/* Agregar después de la firma y antes del cierre del report-body */}
+              {imagenesBase64.some((img) => img !== null) && (
+                <div className="images-section mt-5">
+                  <h4 className="text-uppercase mb-3">IMÁGENES DEL ESTUDIO</h4>
+                  <div className="row row-cols-3 g-3">
+                    {imagenesBase64.map((imagen, index) => {
+                      if (!imagen) return null;
+                      return (
+                        <div key={index} className="col">
+                          <img
+                            src={imagen}
+                            alt={`Imagen ${index + 1}`}
+                            className="img-fluid border"
+                            style={{
+                              width: "100%",
+                              height: "200px",
+                              objectFit: "contain",
+                              backgroundColor: "#f8f9fa",
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
