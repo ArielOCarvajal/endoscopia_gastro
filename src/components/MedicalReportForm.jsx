@@ -851,7 +851,6 @@ const MedicalReportForm = () => {
       </div>
 
       {/* Template para PDF */}
-      {/* Template para PDF */}
       <div id="report-template" className="d-none">
         <div className="report-content p-4 bg-white">
           <div className="report-header">
@@ -864,10 +863,15 @@ const MedicalReportForm = () => {
                 className="logo"
                 style={{ maxWidth: "120px" }}
               />
-              <div className="company-info ms-3">
+              <div className="company-info ms-3 flex-grow-1">
                 <h2 className="mb-0">HOSPITAL CENTRAL</h2>
                 <p className="mb-0">L. N. Alem & Salta, Ciudad Mendoza</p>
-                <h3 className="mb-0 fw-bold">Servicio de Gastroenterologia</h3>
+                <div className="d-flex justify-content-between align-items-center">
+                  <h3 className="mb-0 fw-bold">
+                    Servicio de gastroenterologia
+                  </h3>
+                  <p className="mb-0">Fecha: {formData.fecha}</p>
+                </div>
               </div>
             </div>
 
@@ -875,19 +879,12 @@ const MedicalReportForm = () => {
               <tbody>
                 <tr>
                   <td className="fw-bold" style={{ width: "150px" }}>
-                    Fecha:
+                    Paciente:
                   </td>
-                  <td>{formData.fecha}</td>
-                </tr>
-                <tr>
-                  <td className="fw-bold">Paciente:</td>
                   <td>
                     {formData.paciente} (Doc: {formData.documento})
+                    <span className="ms-4">Edad: {formData.edad} años</span>
                   </td>
-                </tr>
-                <tr>
-                  <td className="fw-bold">Edad:</td>
-                  <td>{formData.edad} años</td>
                 </tr>
                 <tr>
                   <td className="fw-bold">Obra Social:</td>
