@@ -6,17 +6,17 @@ const MEDICOS = [
   {
     nombre: "Campoy, Daniel",
     matricula: "5249",
-    rubrica: "/rubricas/campoy.png",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/campoy.png`,
   },
   {
     nombre: "La Salvia, Daniela",
     matricula: "10439",
-    rubrica: "/rubricas/lasalvia.png",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/lasalvia.png`,
   },
   {
     nombre: "Carvajal, Ariel",
     matricula: "10933",
-    rubrica: "/rubricas/carvajal.png",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
   },
   // Puedes agregar más médicos aquí
 ];
@@ -101,7 +101,9 @@ const MedicalReportForm = () => {
     // Cargar y convertir el logo a base64 cuando el componente se monta
     const loadLogo = async () => {
       try {
-        const response = await fetch("/Logo_HC.png");
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}images/Logo_HC.png`
+        );
         const blob = await response.blob();
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -354,7 +356,7 @@ const MedicalReportForm = () => {
         <div className="pdf-header mb-4 p-4 bg-light border rounded">
           <div className="d-flex align-items-center">
             <img
-              src="/Logo_HC.png"
+              src={`${import.meta.env.BASE_URL}images/Logo_HC.png`}
               alt="Hospital_Central"
               className="logo me-4"
               style={{ maxWidth: "100px" }}
@@ -814,7 +816,9 @@ const MedicalReportForm = () => {
           <div className="report-header">
             <div className="d-flex align-items-center mb-2">
               <img
-                src={logoBase64 || "/Logo_HC.png"}
+                src={
+                  logoBase64 || `${import.meta.env.BASE_URL}images/Logo_HC.png`
+                }
                 alt="Hospital_Central"
                 className="logo"
                 style={{ maxWidth: "120px" }}

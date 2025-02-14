@@ -8,8 +8,8 @@ function App() {
     <div className="container-fluid py-4">
       <header className="text-center mb-4">
         <img
-          src="/Logo_HC.png"
-          alt="CEDIM"
+          src={`${import.meta.env.BASE_URL}images/Logo_HC.png`}
+          alt="Hospital_Central"
           className="logo d-print-none"
           style={{ maxWidth: "200px" }}
         />
