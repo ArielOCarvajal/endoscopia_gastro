@@ -534,3 +534,74 @@
     margin: 0 auto;
   }
 }
+
+/* IMpresion de firma */
+.diagnostic-signature-container {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.diagnostic-section {
+  border: 1px solid #dee2e6;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.signature-section {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.signature-image {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.signature-line {
+  width: 80%;
+  height: 1px;
+  background-color: #000;
+  margin: 0.5rem auto;
+}
+
+/* Ajustes para impresión */
+@media print {
+  .diagnostic-signature-container {
+    grid-template-columns: 1fr 250px;
+    gap: 1rem;
+  }
+  
+  .diagnostic-section {
+    break-inside: avoid;
+  }
+  
+  .signature-section {
+    break-inside: avoid;
+    padding-top: 0;
+  }
+}
+
+/* Estilo segunda pagina */
+/* Agregar a tu archivo CSS */
+.force-new-page {
+  page-break-before: always;
+  margin-top: 20px;
+}
+
+@media print {
+  .force-new-page {
+    page-break-before: always;
+  }
+
+  .images-section {
+    break-inside: avoid;
+  }
+
+  .images-section img {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

@@ -354,7 +354,7 @@ const MedicalReportForm = () => {
     const filename = `${formData.paciente}_${formData.documento}.pdf`;
 
     const opt = {
-      margin: 1,
+      margin: [5, 10, 5, 10], // [top, left, bottom, right] en mm
       filename: filename,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -363,10 +363,11 @@ const MedicalReportForm = () => {
         useCORS: true,
       },
       jsPDF: {
-        unit: "cm",
+        unit: "mm",
         format: "a4",
         orientation: "portrait",
       },
+      // pagebreak: { mode: "avoid-all" }, // Evita cortes en elementos
     };
 
     try {
@@ -876,7 +877,7 @@ const MedicalReportForm = () => {
             </div>
 
             <table className="table table-sm mb-4">
-              <tbody>
+              <tbody style={{ lineHeight: "0.8" }}>
                 <tr>
                   <td className="fw-bold" style={{ width: "150px" }}>
                     Paciente:
@@ -969,40 +970,41 @@ const MedicalReportForm = () => {
                     ? "Retirar informe de biopsias en anatomía patológica (subsuelo, ala este del hospital) en 45 días"
                     : formData.biopsias}
                 </p>
-                <p className="mb-1">Anestesia: {formData.anestesia}</p>
-                {formData.anestesia === "SI" && (
-                  <p className="mb-0">
-                    Anestesiólogo: {formData.anestesiologo}
-                  </p>
-                )}
+                <p className="mb-1">
+                  Anestesia: {formData.anestesia}
+                  {formData.anestesia === "SI" && (
+                    <span className="ms-4">
+                      Anestesiólogo: {formData.anestesiologo}
+                    </span>
+                  )}
+                </p>
               </div>
 
-              <div className="diagnosis mb-4">
-                <h4 className="text-uppercase mb-3 diagnosis-header">
-                  IMPRESIÓN DIAGNÓSTICA
-                </h4>
-                <p className="mb-0">{formData.diagnostico}</p>
-              </div>
+              {/* Sección de diagnóstico y firma */}
+              <div className="diagnostic-signature-container">
+                <div className="diagnostic-section">
+                  <h4 className="text-uppercase mb-3 diagnosis-header">
+                    IMPRESIÓN DIAGNÓSTICA
+                  </h4>
+                  <p className="mb-0">{formData.diagnostico}</p>
+                </div>
 
-              <div className="signature mt-5 text-center">
-                {rubricaBase64 && (
-                  <img
-                    src={rubricaBase64}
-                    alt="Firma médico"
-                    style={{
-                      maxWidth: "200px",
-                      height: "auto",
-                      marginBottom: "10px",
-                    }}
-                  />
-                )}
-                <div className="signature-line"></div>
-                <p className="mb-0">{formData.medico.nombre}</p>
-                <p>Mat. {formData.medico.matricula}</p>
+                <div className="signature-section">
+                  {rubricaBase64 && (
+                    <img
+                      src={rubricaBase64}
+                      alt="Firma médico"
+                      className="signature-image"
+                    />
+                  )}
+                  <div className="signature-line"></div>
+                  <p className="mb-0">{formData.medico.nombre}</p>
+                  <p>Mat. {formData.medico.matricula}</p>
+                </div>
               </div>
               {/* Agregar después de la firma y antes del cierre del report-body */}
               {imagenesBase64.some((img) => img !== null) && (
-                <div className="images-section mt-5">
+                <div className="images-section force-new-page">
                   <h4 className="text-uppercase mb-3">IMÁGENES DEL ESTUDIO</h4>
                   <div className="row row-cols-3 g-3">
                     {imagenesBase64.map((imagen, index) => {
