@@ -354,7 +354,7 @@ const MedicalReportForm = () => {
     const filename = `${formData.paciente}_${formData.documento}.pdf`;
 
     const opt = {
-      margin: [5, 10, 5, 10], // [top, left, bottom, right] en mm
+      margin: [2, 8, 2, 8], // [top, left, bottom, right] en mm
       filename: filename,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -934,12 +934,13 @@ const MedicalReportForm = () => {
                       ESCALA DE PREPARACION DE BOSTON (LIMPIEZA DE COLON):
                     </h4>
                     <p>
-                      &lt; 5 no satisfactoria. = o &gt; 5 satisfactoria.
-                      <br />
                       Total: {formData.escalaBoston.total}/9 (C.D:{" "}
                       {formData.escalaBoston.colonDerecho} C.T:{" "}
                       {formData.escalaBoston.colonTransverso} C.I:{" "}
-                      {formData.escalaBoston.colonIzquierdo})
+                      {formData.escalaBoston.colonIzquierdo}){" - "}
+                      {parseInt(formData.escalaBoston.total) < 5
+                        ? "< 5 no satisfactoria"
+                        : "≥ 5 satisfactoria"}
                     </p>
                   </div>
                 </>
