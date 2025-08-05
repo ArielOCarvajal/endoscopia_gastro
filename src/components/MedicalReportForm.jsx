@@ -5,7 +5,7 @@ import html2pdf from "html2pdf.js";
 const MEDICOS = [
   {
     nombre: "Campoy, Daniel",
-    matricula: "5248",
+    matricula: "5249",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Campoy.png`,
   },
   {
