@@ -14,7 +14,7 @@ const MEDICOS = [
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Richardi.png`,
   },
   {
-    nombre: "Suárez, Andrea",
+    nombre: "Suárez Pellegrino, Andrea",
     matricula: "8588",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Suarez.png`,
   },
