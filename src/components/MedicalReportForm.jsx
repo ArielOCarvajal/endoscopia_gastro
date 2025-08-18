@@ -54,7 +54,7 @@ const MEDICOS = [
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Velazco.png`,
   },
   {
-    nombre: "Carvajal, Ariel",
+    nombre: "Carvajal, Ariel O.",
     matricula: "10934",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
   },
