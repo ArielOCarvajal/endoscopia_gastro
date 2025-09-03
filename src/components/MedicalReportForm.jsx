@@ -118,7 +118,12 @@ const MedicalReportForm = () => {
     const savedData = localStorage.getItem("medicalReportForm");
     if (savedData) {
       const parsedData = JSON.parse(savedData);
-      setFormData(parsedData);
+      // Preservar la fecha actual, no usar la guardada en localStorage
+      const currentDate = new Date().toISOString().split("T")[0];
+      setFormData({
+        ...parsedData,
+        fecha: currentDate
+      });
       if (parsedData.imagenes) {
         setImagenesBase64(parsedData.imagenes);
       }
