@@ -7,56 +7,67 @@ const MEDICOS = [
     nombre: "Campoy, Daniel",
     matricula: "5249",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Campoy.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Richardi, Ana",
     matricula: "11110",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Richardi.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Suárez Pellegrino, Andrea",
     matricula: "8588",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Suarez.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "La Salvia, Daniela",
     matricula: "10439",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Lasalvia.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Martínez, Francisco",
     matricula: "12214",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Martinez.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Cabrera, Marisol",
     matricula: "10778",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Cabrera.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Casbarien, Octavio",
     matricula: "13496",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Casbarien.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Daffra, Pamela",
     matricula: "9834",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Daffra.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Alcaraz, Patricia",
     matricula: "10097",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Alcaraz.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Velazco, Gonzalo",
     matricula: "13524",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/Velazco.png`,
+    servicio: "Gastroenterología",
   },
   {
     nombre: "Carvajal, Ariel O.",
     matricula: "10934",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
+    servicio: "Cirugia",
   },
 
   // Puedes agregar más médicos aquí
@@ -122,7 +133,7 @@ const MedicalReportForm = () => {
       const currentDate = new Date().toISOString().split("T")[0];
       setFormData({
         ...parsedData,
-        fecha: currentDate
+        fecha: currentDate,
       });
       if (parsedData.imagenes) {
         setImagenesBase64(parsedData.imagenes);
@@ -194,6 +205,13 @@ const MedicalReportForm = () => {
       localStorage.setItem("medicalReportForm", JSON.stringify(newData));
       return newData;
     });
+  };
+
+  // Función para formatear fecha de YYYY-MM-DD a DD/MM/YYYY
+  const formatearFecha = (fechaISO) => {
+    if (!fechaISO) return "";
+    const [año, mes, dia] = fechaISO.split("-");
+    return `${dia}/${mes}/${año}`;
   };
 
   // Agregar esta función de utilidad
@@ -411,7 +429,7 @@ const MedicalReportForm = () => {
             <div>
               <h3 className="mb-2">{formData.paciente}</h3>
               <p className="mb-1">Documento: {formData.documento}</p>
-              <p className="mb-1">Fecha: {formData.fecha}</p>
+              <p className="mb-1">Fecha: {formatearFecha(formData.fecha)}</p>
               <p className="mb-0">Obra Social: {formData.obraSocial}</p>
             </div>
           </div>
@@ -876,7 +894,9 @@ const MedicalReportForm = () => {
                   <h3 className="mb-0 fw-bold">
                     Servicio de gastroenterologia
                   </h3>
-                  <p className="mb-0">Fecha: {formData.fecha}</p>
+                  <p className="mb-0">
+                    Fecha: {formatearFecha(formData.fecha)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1008,35 +1028,44 @@ const MedicalReportForm = () => {
                   <p>Mat. {formData.medico.matricula}</p>
                 </div>
               </div>
-              {/* Agregar después de la firma y antes del cierre del report-body */}
-              {imagenesBase64.some((img) => img !== null) && (
-                <div className="images-section force-new-page">
-                  <h4 className="text-uppercase mb-3">IMÁGENES DEL ESTUDIO</h4>
-                  <div className="row row-cols-3 g-3">
-                    {imagenesBase64.map((imagen, index) => {
-                      if (!imagen) return null;
-                      return (
-                        <div key={index} className="col">
-                          <img
-                            src={imagen}
-                            alt={`Imagen ${index + 1}`}
-                            className="img-fluid border"
-                            style={{
-                              width: "100%",
-                              height: "200px",
-                              objectFit: "contain",
-                              backgroundColor: "#f8f9fa",
-                            }}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
+
+        {/* Sección de imágenes en página separada */}
+        {imagenesBase64.some((img) => img !== null) && (
+          <div className="images-section" style={{ pageBreakBefore: "always" }}>
+            <div className="report-content p-4 bg-white">
+              <div className="report-body">
+                <h4 className="text-uppercase mb-3">IMÁGENES DEL ESTUDIO</h4>
+                <h5 className="mb-4">Paciente: {formData.paciente}</h5>
+                <div className="row row-cols-2 g-4">
+                  {imagenesBase64.map((imagen, index) => {
+                    if (!imagen) return null;
+                    return (
+                      <div key={index} className="col">
+                        <img
+                          src={imagen}
+                          alt={`Imagen ${index + 1}`}
+                          className="img-fluid border rounded"
+                          style={{
+                            width: "100%",
+                            height: "200px",
+                            objectFit: "contain",
+                            backgroundColor: "#f8f9fa",
+                          }}
+                        />
+                        <p className="text-center mt-2 mb-0 small text-muted">
+                          Imagen {index + 1}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
