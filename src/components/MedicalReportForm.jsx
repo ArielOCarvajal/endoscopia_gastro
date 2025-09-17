@@ -892,7 +892,7 @@ const MedicalReportForm = () => {
                 <p className="mb-0">L. N. Alem & Salta, Ciudad Mendoza</p>
                 <div className="d-flex justify-content-between align-items-center">
                   <h3 className="mb-0 fw-bold">
-                    Servicio de gastroenterologia
+                    Servicio de {MEDICOS.find(m => m.nombre === formData.medico.nombre)?.servicio || 'gastroenterologia'}
                   </h3>
                   <p className="mb-0">
                     Fecha: {formatearFecha(formData.fecha)}
