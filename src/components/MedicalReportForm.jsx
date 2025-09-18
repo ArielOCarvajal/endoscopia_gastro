@@ -69,7 +69,24 @@ const MEDICOS = [
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
     servicio: "Cirugia",
   },
-
+  {
+    nombre: "Soler, Anibal",
+    matricula: "5185",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/soler.png`,
+    servicio: "Cirugia",
+  },
+  {
+    nombre: "Palmili, Gonzalo",
+    matricula: "9808",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/palmili.png`,
+    servicio: "Cirugia",
+  },
+  {
+    nombre: "Paz, Tarek",
+    matricula: "14218",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/paz.png`,
+    servicio: "Cirugia",
+  },
   // Puedes agregar más médicos aquí
 ];
 
@@ -878,26 +895,36 @@ const MedicalReportForm = () => {
       <div id="report-template" className="d-none">
         <div className="report-content p-4 bg-white">
           <div className="report-header">
-            <div className="d-flex align-items-center mb-2">
-              <img
-                src={
-                  logoBase64 || `${import.meta.env.BASE_URL}images/Logo_HC.png`
-                }
-                alt="Hospital_Central"
-                className="logo"
-                style={{ maxWidth: "120px" }}
-              />
-              <div className="company-info ms-3 flex-grow-1">
+            <div className="header-grid">
+              <div className="header-logo">
+                <img
+                  src={
+                    logoBase64 ||
+                    `${import.meta.env.BASE_URL}images/Logo_HC.png`
+                  }
+                  alt="Hospital_Central"
+                  className="logo"
+                  style={{ maxWidth: "120px" }}
+                />
+              </div>
+              <div className="header-info text-center">
                 <h2 className="mb-0">HOSPITAL CENTRAL</h2>
                 <p className="mb-0">L. N. Alem & Salta, Ciudad Mendoza</p>
-                <div className="d-flex justify-content-between align-items-center">
-                  <h3 className="mb-0 fw-bold">
-                    Servicio de {MEDICOS.find(m => m.nombre === formData.medico.nombre)?.servicio || 'gastroenterologia'}
-                  </h3>
-                  <p className="mb-0">
-                    Fecha: {formatearFecha(formData.fecha)}
-                  </p>
-                </div>
+                <h3
+                  className={`mb-0 fw-bold ${
+                    MEDICOS.find((m) => m.nombre === formData.medico.nombre)
+                      ?.servicio === "Cirugia"
+                      ? "servicio-cirugia"
+                      : ""
+                  }`}
+                >
+                  Servicio de{" "}
+                  {MEDICOS.find((m) => m.nombre === formData.medico.nombre)
+                    ?.servicio || "gastroenterologia"}
+                </h3>
+              </div>
+              <div className="header-date text-end">
+                <p className="mb-0">Fecha: {formatearFecha(formData.fecha)}</p>
               </div>
             </div>
 
