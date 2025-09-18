@@ -106,7 +106,7 @@ const OPCIONES_ESTUDIOS = [
   "HEMOSTASIA ENDOSCOPICA",
   "MUCOSTOMIA",
   "ESCLEROTERAPIA",
-  "LIGADURA DE VARICES"
+  "LIGADURA DE VARICES",
 ];
 
 const MedicalReportForm = () => {
@@ -146,6 +146,7 @@ const MedicalReportForm = () => {
     anestesia: "NO",
     anestesiologo: "",
     diagnostico: "",
+    estudio2: "",
     medico: {
       nombre: "",
       matricula: "",
@@ -602,9 +603,9 @@ const MedicalReportForm = () => {
               </label>
             </div>
           </div>
-          {/* Estudio */}
-          <div className="col-md-8">
-            <label className="form-label">Estudio</label>
+          {/* Estudio y Estudio 2 en la misma fila */}
+          <div className="col-md-6">
+            <label className="form-label">Procedimiento</label>
             <input
               type="text"
               className="form-control"
@@ -616,8 +617,28 @@ const MedicalReportForm = () => {
             />
           </div>
 
+          <div className="col-md-6">
+            <label className="form-label">Procedimiento 2</label>
+            <input
+              type="text"
+              className="form-control"
+              name="estudio2"
+              value={formData.estudio2}
+              onChange={handleInputChange}
+              list="opciones-estudios2"
+              placeholder="Segundo estudio (opcional)"
+            />
+          </div>
+
           {/* Datalist para autocompletar estudios */}
           <datalist id="opciones-estudios">
+            {OPCIONES_ESTUDIOS.map((estudio, index) => (
+              <option key={index} value={estudio} />
+            ))}
+          </datalist>
+
+          {/* Segundo datalist para estudio2 */}
+          <datalist id="opciones-estudios2">
             {OPCIONES_ESTUDIOS.map((estudio, index) => (
               <option key={index} value={estudio} />
             ))}
@@ -979,8 +1000,11 @@ const MedicalReportForm = () => {
                   <td>{formData.medicoSolicitante}</td>
                 </tr> */}
                 <tr>
-                  <td className="fw-bold">Estudio:</td>
-                  <td>{formData.estudio}</td>
+                  <td className="fw-bold">Procedimiento:</td>
+                  <td>
+                    {formData.estudio}
+                    {formData.estudio2 && ` - ${formData.estudio2}`}
+                  </td>
                 </tr>
               </tbody>
             </table>
