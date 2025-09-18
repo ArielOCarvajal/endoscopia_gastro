@@ -543,7 +543,7 @@ const MedicalReportForm = () => {
           </div> */}
 
           <div className="col-12">
-            <label className="form-label">Motivo</label>
+            <label className="form-label">Motivo del procedimiento: </label>
             <input
               type="text"
               className="form-control"
@@ -957,7 +957,9 @@ const MedicalReportForm = () => {
             </table>
 
             <div className="report-body">
-              <h4 className="text-uppercase">{formData.motivo}</h4>
+              <h4 className="text-uppercase">
+                Motivo del procedimiento: {formData.motivo}
+              </h4>
 
               {formData.tipoEstudio === "baja" ? (
                 // Template para endoscopia baja
