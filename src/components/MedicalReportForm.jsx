@@ -90,6 +90,25 @@ const MEDICOS = [
   // Puedes agregar más médicos aquí
 ];
 
+// Opciones de estudios endoscópicos para autocompletar
+const OPCIONES_ESTUDIOS = [
+  "VIDEOENDOSCOPIA DIGESTIVA ALTA",
+  "VIDEOCOLONOSCOPIA",
+  "COLANGIOPANCREATOGRAFIA RETROGRADA ENDOSCOPICA (CPRE)",
+  "ECOENDOSCOPIA",
+  "CAPSULA ENDOSCOPICA",
+  "ENTEROSCOPIA",
+  "ESOFAGOGASTRODUODENOSCOPIA",
+  "RECTOSIGMOIDOSCOPIA",
+  "POLIPECTOMIA ENDOSCOPICA",
+  "DILATACION ESOFAGICA",
+  "COLOCACION DE PROTESIS",
+  "HEMOSTASIA ENDOSCOPICA",
+  "MUCOSTOMIA",
+  "ESCLEROTERAPIA",
+  "LIGADURA DE VARICES"
+];
+
 const MedicalReportForm = () => {
   const initialState = {
     fecha: new Date().toISOString().split("T")[0],
@@ -592,8 +611,18 @@ const MedicalReportForm = () => {
               name="estudio"
               value={formData.estudio}
               onChange={handleInputChange}
+              list="opciones-estudios"
+              placeholder="Seleccione o escriba el estudio"
             />
           </div>
+
+          {/* Datalist para autocompletar estudios */}
+          <datalist id="opciones-estudios">
+            {OPCIONES_ESTUDIOS.map((estudio, index) => (
+              <option key={index} value={estudio} />
+            ))}
+          </datalist>
+
           {/* Después del campo de motivo y tipo de estudio */}
 
           {formData.tipoEstudio === "baja" ? (
