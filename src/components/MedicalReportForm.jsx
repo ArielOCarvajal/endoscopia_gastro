@@ -64,6 +64,12 @@ const MEDICOS = [
     servicio: "Gastroenterología",
   },
   {
+    nombre: "Riveros, Damian",
+    matricula: "13827",
+    rubrica: `${import.meta.env.BASE_URL}images/rubricas/Riveros.png`,
+    servicio: "Gastroenterología",
+  },
+  {
     nombre: "Carvajal, Ariel O.",
     matricula: "10934",
     rubrica: `${import.meta.env.BASE_URL}images/rubricas/carvajal.png`,
